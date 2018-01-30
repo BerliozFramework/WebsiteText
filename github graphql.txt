@@ -1,0 +1,19 @@
+{
+  repository(name: "Berlioz", owner: "BerliozFramework") {
+    files: object(expression: "develop:docs/") {
+      ...on Tree {
+        entries {
+          oid
+          name
+          type
+        }
+      }
+    }
+    object(expression: "develop:docs/index.md") {
+      ... on Blob {
+        oid
+        text
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "berlioz/website-text",
+  "description": "Berlioz Website Text",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "homepage": "http://www.berlioz-framework.com",
+  "authors": [
+    {
+      "name": "Ronan Giron",
+      "email": "ronan.giron@berlioz-framework.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Berlioz\\WebsiteText\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Berlioz\\WebsiteText\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "berlioz/html-selector": "@dev",
+    "erusev/parsedown-extra": "0.7.1",
+    "gregwar/rst": "v1.0.4",
+    "psr/http-message": "1.0.1",
+    "psr/log": "1.0.2",
+    "psr/simple-cache": "1.0.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.5"
+  }
+}

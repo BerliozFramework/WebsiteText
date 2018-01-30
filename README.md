@@ -1,2 +1,1 @@
-# WebsiteText
-Berlioz Website Text Generator
+# Berlioz Website Text
