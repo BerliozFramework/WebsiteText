@@ -30,6 +30,7 @@ class Markdown implements Parser
      * Get ParseDownExtra library.
      *
      * @return \Berlioz\WebsiteText\Parser\ParsedownBerlioz
+     * @throws \Berlioz\WebsiteText\Exception\WebsiteTextException
      */
     private function getParsedownBerlioz(): ParsedownBerlioz
     {

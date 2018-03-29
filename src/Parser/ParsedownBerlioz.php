@@ -13,6 +13,8 @@
 namespace Berlioz\WebsiteText\Parser;
 
 
+use Berlioz\WebsiteText\Exception\WebsiteTextException;
+
 class ParsedownBerlioz extends \ParsedownExtra
 {
     /** @var array Metas */
@@ -21,15 +23,20 @@ class ParsedownBerlioz extends \ParsedownExtra
     /**
      * ParsedownBerlioz constructor.
      *
-     * @throws \Exception
+     * @throws \Berlioz\WebsiteText\Exception\WebsiteTextException
      */
     public function __construct()
     {
         if (parent::version < '0.7.0') {
-            throw new \Exception('ParsedownBerlioz requires a later version of ParsedownExtra');
+            throw new WebsiteTextException('ParsedownBerlioz requires a later version of ParsedownExtra');
         }
 
-        parent::__construct();
+        // Parent constructor
+        try {
+            parent::__construct();
+        } catch (\Exception $e) {
+            throw new WebsiteTextException(sprintf('Class "%s" throw an error: %s', get_parent_class($this), $e->getMessage()));
+        }
 
         $this->BlockTypes['!'] [] = 'Meta';
     }
