@@ -15,7 +15,7 @@ namespace Berlioz\WebsiteText\Loader;
 
 use Berlioz\WebsiteText\Exception\LoaderException;
 
-class FileSystem extends AbstractLoader
+class FileSystemLoader extends AbstractLoader
 {
     /** @var string[] Files */
     private $files;
