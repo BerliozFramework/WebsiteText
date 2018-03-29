@@ -19,6 +19,8 @@ class Document
     public static $defaultPages = ['index', 'index.html'];
     /** @var string Path of document */
     private $filename;
+    /** @var \DateTime Date time of document */
+    private $datetime;
     /** @var string Title */
     private $title;
     /** @var string Raw content */
@@ -80,6 +82,30 @@ class Document
     public function setFilename(string $filename): Document
     {
         $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get date time.
+     *
+     * @return \DateTime
+     */
+    public function getDatetime(): \DateTime
+    {
+        return $this->datetime ?? new \DateTime('now');
+    }
+
+    /**
+     * Set date time.
+     *
+     * @param \DateTime $datetime
+     *
+     * @return Document
+     */
+    public function setDatetime(\DateTime $datetime): Document
+    {
+        $this->datetime = $datetime;
 
         return $this;
     }
