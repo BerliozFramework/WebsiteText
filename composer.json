@@ -1,7 +1,8 @@
 {
   "name": "berlioz/website-text",
   "description": "Berlioz Website Text",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "MIT",
   "homepage": "http://www.berlioz-framework.com",
   "authors": [
@@ -24,7 +25,9 @@
     "php": ">=7.1",
     "berlioz/html-selector": "@dev",
     "erusev/parsedown-extra": "0.7.1",
-    "gregwar/rst": "v1.0.4",
+    "gregwar/rst": "1.0.4",
+    "php-http/httplug": "1.1.0",
+    "php-http/message-factory": "v1.0.2",
     "psr/http-message": "1.0.1",
     "psr/log": "1.0.2",
     "psr/simple-cache": "1.0.0"
