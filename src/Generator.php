@@ -13,7 +13,7 @@
 namespace Berlioz\WebsiteText;
 
 
-use Berlioz\HtmlSelector\Exception\QueryException;
+use Berlioz\HtmlSelector\Exception\HtmlSelectorException;
 use Berlioz\HtmlSelector\Query;
 use Berlioz\WebsiteText\Exception\WebsiteTextException;
 use Berlioz\WebsiteText\Parser\Markdown;
@@ -454,8 +454,8 @@ class Generator
      * @param \Berlioz\WebsiteText\Document $document
      *
      * @return \Berlioz\WebsiteText\Document
-     * @throws \Berlioz\HtmlSelector\Exception\QueryException
      * @throws \Berlioz\WebsiteText\Exception\WebsiteTextException
+     * @throws \Berlioz\HtmlSelector\Exception\HtmlSelectorException
      */
     private function htmlTreatment(Document $document): Document
     {
@@ -530,6 +530,7 @@ class Generator
      * @param \Berlioz\HtmlSelector\Query   $query
      *
      * @return \Berlioz\WebsiteText\Summary
+     * @throws \Berlioz\HtmlSelector\Exception\HtmlSelectorException
      */
     private function extractDocumentSummary(Document $document, Query $query): Summary
     {
@@ -660,7 +661,7 @@ class Generator
                     if (!is_null($this->getSummary())) {
                         $this->getSummary()->addDocument($document);
                     }
-                } catch (QueryException $e) {
+                } catch (HtmlSelectorException $e) {
                     throw new WebsiteTextException(sprintf('Unable to treat document "%s", bad html format', $document->getFilename()));
                 }
             }
