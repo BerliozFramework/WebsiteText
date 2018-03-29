@@ -14,48 +14,11 @@ namespace Berlioz\WebsiteText\Loader;
 
 
 use Berlioz\WebsiteText\Exception\LoaderException;
-use Berlioz\WebsiteText\Loader;
 
-class FileSystem implements Loader
+class FileSystem extends AbstractLoader
 {
-    /** @var string Base path */
-    private $basePath;
     /** @var string[] Files */
     private $files;
-
-    /**
-     * FileSystem constructor.
-     *
-     * @param string $basePath
-     */
-    public function __construct(string $basePath)
-    {
-        $this->basePath = $basePath;
-    }
-
-    /**
-     * Get base path.
-     *
-     * @return string
-     */
-    public function getBasePath(): string
-    {
-        return $this->basePath;
-    }
-
-    /**
-     * Set base path.
-     *
-     * @param string $basePath
-     *
-     * @return FileSystem
-     */
-    public function setBasePath(string $basePath): FileSystem
-    {
-        $this->basePath = $basePath;
-
-        return $this;
-    }
 
     /**
      * Dir to array.
@@ -64,6 +27,7 @@ class FileSystem implements Loader
      * @param string $prefix Prefix
      *
      * @return array
+     * @throws \Berlioz\WebsiteText\Exception\LoaderException
      */
     private function getAllFiles(string $dir, string $prefix = '')
     {
@@ -74,7 +38,9 @@ class FileSystem implements Loader
             $partialFilename = rtrim($prefix, '\\/') . '/' . $filename;
 
             if (is_file($fullFilename) && is_readable($fullFilename)) {
-                $files[] = str_replace('\\', '/', $partialFilename);
+                if ($this->testFilter($fullFilename)) {
+                    $files[] = str_replace('\\', '/', $partialFilename);
+                }
             } else {
                 if (!in_array($filename, ['.', '..']) && is_dir($fullFilename)) {
                     $files = array_merge($files, $this->getAllFiles($fullFilename, $partialFilename));
@@ -90,7 +56,7 @@ class FileSystem implements Loader
      */
     public function getUniqId(): string
     {
-        return sha1($this->basePath);
+        return sha1($this->getBasePath());
     }
 
     /**
