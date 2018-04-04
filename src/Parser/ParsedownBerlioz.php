@@ -69,7 +69,7 @@ class ParsedownBerlioz extends \ParsedownExtra
             switch ($value) {
                 case 'true':
                 case 'false':
-                    $value = boolval($value);
+                    $value = ($value == 'true');
                     break;
             }
 
