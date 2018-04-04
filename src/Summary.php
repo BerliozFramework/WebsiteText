@@ -18,6 +18,14 @@ use Berlioz\WebsiteText\Summary\Element;
 
 class Summary extends AbstractElement
 {
+    /** @var int Max visibility level */
+    private $maxVisibilityLevel;
+
+    public function __construct(?int $maxVisibilityLevel = null)
+    {
+        $this->maxVisibilityLevel = $maxVisibilityLevel;
+    }
+
     /**
      * Find by document.
      *
@@ -71,6 +79,8 @@ class Summary extends AbstractElement
      */
     public function addDocument(Document $document): Summary
     {
+        $visible = !($document->getMeta('index-visible') === false);
+
         if (!empty($titles = $document->getMeta('index'))) {
             $titles = explode(';', $titles);
             $titles = $this->filterTitles($titles);
@@ -78,16 +88,21 @@ class Summary extends AbstractElement
             $parentElement = $this;
 
             for ($i = 0; $i < $nbTitles; $i++) {
-                if (is_null($element = $parentElement->getElementByTitle($titles[$i]))) {
+                $element = $parentElement->getElementByTitle($titles[$i]);
+
+                // Create if not exists or it's the last of list
+                if (is_null($element)) {
                     $element = new Element;
                     $element->setTitle($titles[$i]);
-
-                    if ($i + 1 == $nbTitles) {
-                        $element->setUrl($document->getUrlPath());
-                    }
-                    $element->setOrder($document->getMeta('index-order'));
-
                     $parentElement->addSubElement($element);
+                }
+
+                // Define url and order if it's last element
+                if ($i + 1 == $nbTitles) {
+                    $elementVisible = ($visible === true && (is_null($this->maxVisibilityLevel) || $this->maxVisibilityLevel >= ($i + 1)));
+                    $element->setUrl($document->getUrlPath())
+                            ->setOrder($document->getMeta('index-order'))
+                            ->setVisible($elementVisible, $elementVisible);
                 }
 
                 $parentElement = $element;

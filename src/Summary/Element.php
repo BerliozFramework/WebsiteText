@@ -23,6 +23,8 @@ class Element extends AbstractElement
     private $id;
     /** @var int|null Order */
     private $order;
+    /** @var bool Visible ? */
+    private $visible = false;
     /** @var bool Selected ? */
     private $selected = false;
 
@@ -31,7 +33,7 @@ class Element extends AbstractElement
      */
     public function __sleep(): array
     {
-        return array_merge(['title', 'url', 'id', 'order'], parent::__sleep());
+        return array_merge(['title', 'url', 'id', 'order', 'visible'], parent::__sleep());
     }
 
     /**
@@ -131,6 +133,57 @@ class Element extends AbstractElement
     }
 
     /**
+     * Is visible ?
+     *
+     * @return bool
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible ?? false;
+    }
+
+    /**
+     * Set visible.
+     *
+     * @param bool $visible
+     * @param bool $recursive
+     *
+     * @return Element
+     */
+    public function setVisible(bool $visible, bool $recursive = false): Element
+    {
+        $this->visible = $visible;
+
+        // Set selected
+        if ($recursive) {
+            if (!is_null($parentElement = $this->getParentElement()) && $parentElement instanceof Element) {
+                $parentElement->setVisible($visible, $recursive);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Count visible sub elements.
+     *
+     * @param bool $value Value of visibility to count (default: true)
+     *
+     * @return int
+     */
+    public function countVisible(bool $value = true)
+    {
+        $nb = 0;
+
+        /** @var \Berlioz\WebsiteText\Summary\Element $element */
+        foreach ($this as $element) {
+            $nb += $element->isVisible() ? 1 : 0;
+        }
+
+        return $nb;
+    }
+
+    /**
      * Is selected ?
      *
      * @return bool
@@ -144,16 +197,19 @@ class Element extends AbstractElement
      * Set selected.
      *
      * @param bool $selected
+     * @param bool $recursive
      *
      * @return Element
      */
-    public function setSelected(bool $selected): Element
+    public function setSelected(bool $selected, bool $recursive = false): Element
     {
         $this->selected = $selected;
 
         // Set selected
-        if (!is_null($parentElement = $this->getParentElement()) && $parentElement instanceof Element) {
-            $parentElement->setSelected($selected);
+        if ($recursive) {
+            if (!is_null($parentElement = $this->getParentElement()) && $parentElement instanceof Element) {
+                $parentElement->setSelected($selected, $recursive);
+            }
         }
 
         return $this;

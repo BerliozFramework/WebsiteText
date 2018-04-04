@@ -57,16 +57,18 @@ class Generator
     public function __construct(?Loader $loader = null, array $options = [], ?CacheInterface $cacheManager = null)
     {
         // Options
-        $this->options = ['url.host'                => null,
-                          'url.host_external_blank' => true,
-                          'url.host_external_rel'   => 'noopener',
+        $this->options = ['url.host'                  => null,
+                          'url.host_external_blank'   => true,
+                          'url.host_external_rel'     => 'noopener',
                           // Prefix of urls of documentation
-                          'url.prefix'              => '',
+                          'url.prefix'                => '',
                           // Path of imgs of documentation
-                          'url.images-path'         => '',
-                          'parsing.remove-h1'       => true,
-                          'parsing.summary'         => true,
-                          'summary'                 => true];
+                          'url.images-path'           => '',
+                          'parsing.remove-h1'         => true,
+                          'parsing.summary'           => true,
+                          'parsing.summary_max_level' => 2,
+                          'summary'                   => true,
+                          'summary.max_level'         => 2];
         $options = array_intersect_key($options, $this->options);
         $this->options = array_merge($this->options, $options);
 
@@ -322,7 +324,7 @@ class Generator
     {
         if ($this->getOption('summary') === true) {
             if (is_null($this->summary)) {
-                $this->summary = new Summary;
+                $this->summary = new Summary($this->getOption('summary.max_level'));
             }
 
             return $this->summary;
@@ -540,7 +542,7 @@ class Generator
      */
     private function extractDocumentSummary(Document $document, Query $query): Summary
     {
-        $summary = new Summary;
+        $summary = new Summary($this->getOption('parsing.summary_max_level'));
         $ids = [];
         $headers = $query->find(':header:not(h1)');
 
@@ -605,6 +607,7 @@ class Generator
                 $summaryElement->setTitle($header->text());
                 $summaryElement->setUrl($document->getUrlPath());
                 $summaryElement->setId($id);
+                $summaryElement->setVisible($headerLevel <= $this->getOption('parsing.summary_max_level'));
 
                 // Add element to summary hierarchy
                 {
@@ -725,7 +728,7 @@ class Generator
         if (isset($this->documentsUrls[$websiteTextPath])) {
             if (!is_null($document = $this->getDocument($this->documentsUrls[$websiteTextPath]))) {
                 if (!is_null($summaryElement = $this->getSummary()->findByDocument($document))) {
-                    $summaryElement->setSelected(true);
+                    $summaryElement->setSelected(true, true);
                 }
 
                 return $document;
