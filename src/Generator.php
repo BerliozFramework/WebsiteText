@@ -459,7 +459,14 @@ class Generator
      */
     private function htmlTreatment(Document $document): Document
     {
-        $query = Query::loadHtml($document->getContent());
+        $html = $document->getContent();
+
+        // Encoding
+        $encoding = mb_detect_encoding($html) ?? 'ascii';
+        $html = sprintf('<html><head><meta charset="%s"></head><body>%s</body></html>', $encoding, $html);
+
+        // Load HTML in HtmlSelector library
+        $query = Query::loadHtml($html);
 
         // Replacement of links
         foreach ($query->find('a[href]') as $link) {
