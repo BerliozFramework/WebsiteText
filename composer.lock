@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "15623e91339a9923658722db7f44b8c9",
+    "content-hash": "000f9ecbe892c2f0a58bb3e592b1dcae",
     "packages": [
         {
             "name": "berlioz/html-selector",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BerliozFramework/HtmlSelector.git",
-                "reference": "63d0aaa77bf4c2ab008b9e1944039abd004a1ec7"
+                "reference": "6c3199d89670aa40ea87bf0fe0152f05d7fb0544"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BerliozFramework/HtmlSelector/zipball/63d0aaa77bf4c2ab008b9e1944039abd004a1ec7",
-                "reference": "63d0aaa77bf4c2ab008b9e1944039abd004a1ec7",
+                "url": "https://api.github.com/repos/BerliozFramework/HtmlSelector/zipball/6c3199d89670aa40ea87bf0fe0152f05d7fb0544",
+                "reference": "6c3199d89670aa40ea87bf0fe0152f05d7fb0544",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
             ],
             "description": "Berlioz HTML Selector",
             "homepage": "http://www.berlioz-framework.com",
-            "time": "2018-03-16 00:04:06"
+            "time": "2018-04-04 15:57:14"
         },
         {
             "name": "erusev/parsedown",
