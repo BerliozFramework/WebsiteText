@@ -426,8 +426,7 @@ class Generator
             $finalPath = str_replace(DIRECTORY_SEPARATOR, '/', $finalPath);
 
             // Concatenation
-            $finalPath .= (substr($finalPath, -1) == '/' ? substr($finalPath, 0, -1) : '') .
-                          (substr($path, 0, 1) == '/' ? substr($path, 1) : $path);
+            $finalPath = sprintf('%s/%s', rtrim($finalPath, '/'), ltrim($path, '/'));
 
             // Replacement of '//'
             $finalPath = preg_replace('#/{2,}#', '/', $finalPath);
