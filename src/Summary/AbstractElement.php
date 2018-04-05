@@ -99,7 +99,7 @@ abstract class AbstractElement implements \IteratorAggregate, \Countable
     /**
      * Order sub elements.
      */
-    private function orderSubElements()
+    protected function orderSubElements()
     {
         usort($this->subElements,
             function ($el1, $el2) {

@@ -127,7 +127,13 @@ class Element extends AbstractElement
      */
     public function setOrder(?int $order): Element
     {
+        $oldOrder = $this->order;
         $this->order = $order;
+
+        // Order parent
+        if ($oldOrder != $this->order && !is_null($this->getParentElement())) {
+            $this->getParentElement()->orderSubElements();
+        }
 
         return $this;
     }
