@@ -15,6 +15,7 @@ namespace Berlioz\WebsiteText;
 
 use Berlioz\HtmlSelector\Exception\HtmlSelectorException;
 use Berlioz\HtmlSelector\Query;
+use Berlioz\WebsiteText\Exception\LoaderException;
 use Berlioz\WebsiteText\Exception\WebsiteTextException;
 use Berlioz\WebsiteText\Parser\Markdown;
 use Berlioz\WebsiteText\Parser\reStructuredText;
@@ -60,6 +61,7 @@ class Generator
         $this->options = ['url.host'                  => null,
                           'url.host_external_blank'   => true,
                           'url.host_external_rel'     => 'noopener',
+                          'exception_if_not_found'    => true,
                           // Prefix of urls of documentation
                           'url.prefix'                => '',
                           // Path of imgs of documentation
@@ -399,6 +401,10 @@ class Generator
                 } else {
                     throw new WebsiteTextException(sprintf('Unable to parse content of document with "%s" parser', get_class($parser)));
                 }
+            }
+        } catch (LoaderException $e) {
+            if ($this->getOption('exception_if_not_found') == true) {
+                throw $e;
             }
         } catch (WebsiteTextException $e) {
             throw $e;
