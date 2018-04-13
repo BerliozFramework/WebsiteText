@@ -158,22 +158,33 @@ class GitLabLoader extends AbstractLoader
         if (is_null($this->files) || $force) {
             $this->files = [];
 
-            $response = $this->doRequest('GET',
-                                         sprintf('%s/api/v4/projects/%s/repository/tree?recursive=true&ref=%s&path=%s',
-                                                 $this->gitLabOptions['api'],
-                                                 urlencode($this->gitLabOptions['project']),
-                                                 $this->gitLabOptions['ref'],
-                                                 $this->gitLabOptions['path']));
+            $page = 0;
+            $nbPage = 1;
+            while ($page <= $nbPage) {
+                $page++;
+                $response = $this->doRequest('GET',
+                                             sprintf('%s/api/v4/projects/%s/repository/tree?recursive=true&ref=%s&path=%s&per_page=100&page=%d',
+                                                     $this->gitLabOptions['api'],
+                                                     urlencode($this->gitLabOptions['project']),
+                                                     $this->gitLabOptions['ref'],
+                                                     $this->gitLabOptions['path'],
+                                                     $page));
 
-            if (($jsonResponse = json_decode($response->getBody(), true)) !== false) {
-                foreach ($jsonResponse as $entry) {
-                    $fullFilename = '/' . trim($entry['path'], '/');
+                if (($jsonResponse = json_decode($response->getBody(), true)) !== false) {
+                    foreach ($jsonResponse as $entry) {
+                        $fullFilename = '/' . trim($entry['path'], '/');
 
-                    if ($entry['type'] == 'blob') {
-                        if ($this->testFilter($fullFilename)) {
-                            $this->files[$fullFilename] = $this->getFileFromGitLab($entry['id']);
+                        if ($entry['type'] == 'blob') {
+                            if ($this->testFilter($fullFilename)) {
+                                $this->files[$fullFilename] = $this->getFileFromGitLab($entry['id']);
+                            }
                         }
                     }
+                }
+
+                // Get nb pages
+                if (!empty($nextPageHeader = $response->getHeader('X-Total-Pages'))) {
+                    $nbPage = intval($response->getHeader('X-Total-Pages')[0]);
                 }
             }
         }
