@@ -183,7 +183,7 @@ class Element extends AbstractElement
 
         /** @var \Berlioz\WebsiteText\Summary\Element $element */
         foreach ($this as $element) {
-            $nb += $element->isVisible() ? 1 : 0;
+            $nb += $element->isVisible() == $value ? 1 : 0;
         }
 
         return $nb;
